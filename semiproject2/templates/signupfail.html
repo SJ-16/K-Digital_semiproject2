@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error!!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                window.location.href = '{% url 'index' %}#signup'
+            }, 2000);
+        });
+    </script>
+</head>
+<body>
+    {{msg}}
+    <h3>잠시 후 회원가입 페이지로 되돌아갑니다.</h3>
+</body>
+</html>

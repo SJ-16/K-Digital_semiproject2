@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanks for joining us!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                window.location.href = '{% url 'index' %}'     // 페이지 리디렉션
+            }, 2000);
+        });
+    </script>
+</head>
+<body>
+    <h1>회원이 되신 것을 환영합니다.</h1>
+</body>
+</html>

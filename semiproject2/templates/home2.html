@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+</head>
+<body>
+      <h1>Main Page</h1>
+      {% if request.session.logininfo.id == None %}
+            <a href="{% url 'login' %}">LOGIN</a>
+            <a href="{% url 'signup' %}">SIGN UP</a>
+      {% else %}
+            {{request.session.logininfo.name}}님 반갑습니다.
+            <a href="{% url 'logout' %}">LOGOUT</a>
+            <h3><a href="{% url 'recommend' %}">내 사이즈 추천</h3>
+      {% endif %}
+</body>
+</html>

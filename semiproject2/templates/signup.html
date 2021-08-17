@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up Page</title>
+</head>
+<body>
+    <h1>Sign Up Page</h1>
+    <form action="{% url 'signupimpl' %}" method="post">
+        {% csrf_token %}
+        ID <input type="text" name="id"><br>
+        PASSWORD <input type="password" name="pwd"><br>
+        NAME <input type="text" name="name"><br>
+        AGE <input type="number" name="age"><br>
+        WEIGHT <input type="number" name="wt"><br>
+        <p> * 키는 소수점 1자리까지 기재하시기 바랍니다.</p>
+        HEIGHT <input type="text" name="ht"><br>
+        <input type="submit" value="SIGN UP">
+    </form>
+</body>
+</html>

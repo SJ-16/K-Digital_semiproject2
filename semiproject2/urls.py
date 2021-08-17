@@ -20,5 +20,12 @@ from semiproject2 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('', views.index, name='index'),
+    path('home2', views.home2, name='home2'),
+    path('login', views.login, name='login'),
+    path('loginimpl', views.loginimpl, name='loginimpl'),
+    path('logout', views.logout, name='logout'),
+    path('signup', views.signup, name='signup'),
+    path('signupimpl', views.signupimpl, name='signupimpl'),
+    path('recommend', views.recommend, name='recommend'),
 ]

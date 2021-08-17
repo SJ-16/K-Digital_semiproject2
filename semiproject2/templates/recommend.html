@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>We recommend your size</title>
+</head>
+<body>
+    <h1>사이즈 추천</h1>
+    <h2>{{request.session.logininfo.name}}님의 추천사이즈는 "{{size}}"입니다.<br>
+        아래 사이트를 누르시면 추천 사이즈에 맞는 의류를 확인할 수 있습니다.</h2>
+    <div>
+        <a href="{{mf}}"><img src="{% static 'img/mf.png' %}" style="width:300px;"></a>
+        <a href="{{yoox}}"><img src="{% static 'img/yoox.png' %}" style="width:300px;"></a>
+    </div>
+</body>
+</html>
