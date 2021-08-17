@@ -4,7 +4,7 @@
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
-from config.settings import DATA_DIRS
+from config.settings import DATA_DIRS, STATICFILES_DIRS
 import time
 start = time.time()
 '''
@@ -104,3 +104,52 @@ svm_report = metrics.classification_report(y_test, y_hat)
 print(svm_report)
 finish = time.time() - start
 print('총 실행시간',finish);
+
+# Visualising the Training set results
+from matplotlib.colors import ListedColormap
+from matplotlib.colors import ListedColormap
+import numpy as np
+import matplotlib.pyplot as plt
+
+X_set, y_set = X_train, y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
+                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
+Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
+# Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
+pred = svm_model.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
+plt.contourf(X1, X2, pred,
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+                c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
+plt.title('SVM (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Size')
+plt.legend()
+plt.show()
+plt.savefig(STATICFILES_DIRS[0]+'//svmtrainscatter.png')
+plt.close()
+
+# Visualising the Test set results
+X_set, y_set = X_test, y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
+                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
+Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
+# Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
+pred = svm_model.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
+plt.contourf(X1, X2, pred,
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+                c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
+plt.title('SVM (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Size')
+plt.legend()
+plt.show()
+plt.savefig(STATICFILES_DIRS[0]+'//svmtestscatter.png')

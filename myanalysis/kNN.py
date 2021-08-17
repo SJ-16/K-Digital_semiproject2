@@ -11,6 +11,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import font_manager, rc
 from matplotlib.colors import ListedColormap
+import numpy as np
+import matplotlib.pyplot as plt
 font_path = "C:/Windows/Fonts/gulim.ttc"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font) ## 그래프를 알아보기위해 폰트 설정
@@ -38,9 +40,9 @@ print('\n')
 '''
 [Step 3] 분석에 사용할 속성을 선택
 '''
-# # Label Encoding
-# df['size'] = df['size'].map({'XXS': 1, 'S': 2, 'M' : 3,
-#                              'L' : 4, 'XL' : 5, 'XXL' : 6, 'XXXL' : 7})
+# Label Encoding
+df['size'] = df['size'].map({'XXS': 1, 'S': 2, 'M' : 3,
+                             'L' : 4, 'XL' : 5, 'XXL' : 6, 'XXXL' : 7})
 
 # 분석에 활용할 열(속성)을 선택
 ndf = df[['weight', 'age', 'height', 'size']]
@@ -115,6 +117,7 @@ print('train data 개수: ', X_train.shape)
 print('test data 개수: ', X_test.shape)
 
 
+
 '''
 [Step 5] KNN 분류 모형 - sklearn 사용
 '''
@@ -157,46 +160,44 @@ from sklearn.metrics import accuracy_score
 knn_acc = accuracy_score(y_test,y_hat);
 print(knn_acc);
 
+# Visualising the Training set results
+# X_set, y_set = X_train, y_train
+# X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.02),
+#                      np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.02))
+# Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
+# # Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
+# pred = knn.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
+# plt.contourf(X1, X2, pred, cmap = ListedColormap(('red', 'green')) )
+#
+# plt.xlim(X1.min(), X1.max())
+# plt.ylim(X2.min(), X2.max())
+# for i, j in enumerate(np.unique(y_set)):
+#     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+#                 c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
+# plt.title('KNN (Training set)')
+# plt.xlabel('Age')
+# plt.ylabel('Size')
+# plt.legend()
+# plt.savefig(STATICFILES_DIRS[0]+'//knntrainscatter.png')
 
-
-# # scatter plot
-#
-# n_neighbors = 228
-#
-# X = X[:, :2]
-#
-# y= y.target
-# h = .02  # step size in the mesh
-#
-# cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
-# cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
-#
-# for weights in ['uniform', 'distance']:
-#     clf = KNeighborsClassifier(n_neighbors, weights=weights)
-#     clf.fit(X, y)
-#
-#     # Plot the decision boundary. For that, we will assign a color to each
-#     # point in the mesh [x_min, x_max]x[y_min, y_max].
-#     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-#     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-#     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-#                          np.arange(y_min, y_max, h))
-#     Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-#
-#     # Put the result into a color plot
-#     Z = Z.reshape(xx.shape)
-#     plt.figure()
-#     plt.pcolormesh(xx, yy, Z, cmap=cmap_light)
-#
-#     # Plot also the training points
-#     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold,
-#                 edgecolor='k', s=20)
-#     plt.xlim(xx.min(), xx.max())
-#     plt.ylim(yy.min(), yy.max())
-#     plt.title("3-Class classification (k = %i, weights = '%s')"
-#               % (n_neighbors, weights))
-#
-# plt.show()
+# Visualising the Test set results
+X_set, y_set = X_test, y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.02),
+                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.02))
+Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
+# Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
+pred = knn.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
+plt.contourf(X1, X2, pred, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+                c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
+plt.title('KNN (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Size')
+plt.legend()
+plt.savefig(STATICFILES_DIRS[0]+'//knntestscatter.png')
 
 # X=ndf[['weight', 'age', 'height']]
 # data = pd.DataFrame({'weight':[59],'age':[36],'height':[167.6]})
