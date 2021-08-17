@@ -4,6 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>We recommend your size</title>
+    <style>
+        body{
+            background-image : url("{% static 'assets/img/의류일러스트.jpg' %}");
+        }
+        h1{
+            background:black;
+            color:white;
+            text-align: center;
+        }
+        h2{
+            background:black;
+            color:white;
+            text-align: center;
+        }
+        div{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <h1>사이즈 추천</h1>
@@ -13,5 +31,7 @@
         <a href="{{mf}}"><img src="{% static 'img/mf.png' %}" style="width:300px;"></a>
         <a href="{{yoox}}"><img src="{% static 'img/yoox.png' %}" style="width:300px;"></a>
     </div>
+    <h2><a href="{% url 'index' %}">Main Page로 돌아가기</a></h2>
+
 </body>
 </html>
