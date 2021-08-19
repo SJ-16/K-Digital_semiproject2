@@ -11,6 +11,13 @@ config = {
     'port': 3306,
     'charset': 'utf8',
     'use_unicode': True
+    # 'database': 'namseungju$login',
+    # 'user': 'namseungju',
+    # 'password': 'mariadb11!!',
+    # 'host': 'namseungju.mysql.pythonanywhere-services.com',
+    # 'port': 3306,
+    # 'charset': 'utf8',
+    # 'use_unicode': True
 }
 
 

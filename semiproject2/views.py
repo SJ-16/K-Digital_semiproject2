@@ -46,7 +46,7 @@ def signupimpl(request):
         id = request.POST['id']
         pwd = request.POST['pwd']
         name = request.POST['name']
-        age = int(request.POST['get'])
+        age = int(request.POST['age'])
         height = float(request.POST['ht'])
         weight = int(request.POST['wt'])
         CustDB().insert(id, pwd, name, age, height, weight)
