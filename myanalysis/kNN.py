@@ -4,6 +4,7 @@
 import pandas as pd
 import seaborn as sns
 from config.settings import DATA_DIRS, STATICFILES_DIRS
+import pickle
 #----------------------plot 라이브러리 ----------------------------------
 import matplotlib
 import seaborn as sb
@@ -40,14 +41,19 @@ print('\n')
 '''
 [Step 3] 분석에 사용할 속성을 선택
 '''
-# Label Encoding
-df['size'] = df['size'].map({'XXS': 1, 'S': 2, 'M' : 3,
-                             'L' : 4, 'XL' : 5, 'XXL' : 6, 'XXXL' : 7})
+# # Label Encoding
+# df['size'] = df['size'].map({'XXS': 1, 'S': 2, 'M' : 3,
+#                              'L' : 4, 'XL' : 5, 'XXL' : 6, 'XXXL' : 7})
 
 # 분석에 활용할 열(속성)을 선택
 ndf = df[['weight', 'age', 'height', 'size']]
 print(ndf.head())
 print('\n')
+
+#피클로 데이터 저장
+with open( DATA_DIRS[0]+"//data.pickle", "wb" ) as file:
+    pickle.dump( ndf, file)
+
 
 # # 원핫인코딩 - 범주형 데이터를 모형이 인식할 수 있도록 숫자형으로 변환
 # onehot_size = pd.get_dummies(ndf['size'])
@@ -70,7 +76,7 @@ print('\n')
 '''
 
 # 속성(변수) 선택
-X=ndf[['weight', 'age', 'height']]  #독립 변수 X
+X=ndf[['age','height','weight']]  #독립 변수 X
 y=ndf['size']       #종속 변수 Y
 print('--------------------------------------------22222222222222222222222');
 print(X);
@@ -100,9 +106,9 @@ print(X);
 # plt.legend(loc = 'upper left', fontsize = 12)
 # plt.savefig(STATICFILES_DIRS[0]+'//height_age.png')
 
-# # Scatter Matrix
-# sb.pairplot(data = ndf, hue = 'size',palette = 'magma')
-# plt.savefig(STATICFILES_DIRS[0]+'//pairplot.png')
+# Scatter Matrix
+sb.pairplot(data = ndf, hue = 'size',palette = 'bright')
+plt.savefig(STATICFILES_DIRS[0]+'//pairplot.png')
 # plt.show();
 #----------------------------------------
 # 설명 변수 데이터를 정규화(normalization)
@@ -139,13 +145,16 @@ knn = KNeighborsClassifier(n_neighbors=228)
 # train data를 가지고 모형 학습
 knn.fit(X_train, y_train)
 print(X_test)
-print(knn.predict([[62,28,172.7]]));
+print(knn.predict([[28,172.7,62]]));
 
 # test data를 가지고 y_hat을 예측 (분류)
 y_hat = knn.predict(X_test)
-
 print(y_hat[0:10])
 print(y_test.values[0:10])
+
+#피클로 데이터 저장
+with open( DATA_DIRS[0]+"//knn.pickle", "wb" ) as file:
+    pickle.dump( knn, file)
 
 # 모형 성능 평가 - Confusion Matrix 계산
 from sklearn import metrics
@@ -160,7 +169,8 @@ from sklearn.metrics import accuracy_score
 knn_acc = accuracy_score(y_test,y_hat);
 print(knn_acc);
 
-# Visualising the Training set results
+
+# # Visualising the Training set results
 # X_set, y_set = X_train, y_train
 # X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.02),
 #                      np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.02))
@@ -175,29 +185,29 @@ print(knn_acc);
 #     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
 #                 c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
 # plt.title('KNN (Training set)')
-# plt.xlabel('Age')
-# plt.ylabel('Size')
+# plt.xlabel('Weight')
+# plt.ylabel('Age')
 # plt.legend()
 # plt.savefig(STATICFILES_DIRS[0]+'//knntrainscatter.png')
-
-# Visualising the Test set results
-X_set, y_set = X_test, y_test
-X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.02),
-                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.02))
-Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
-# Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
-pred = knn.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
-plt.contourf(X1, X2, pred, cmap = ListedColormap(('red', 'green')))
-plt.xlim(X1.min(), X1.max())
-plt.ylim(X2.min(), X2.max())
-for i, j in enumerate(np.unique(y_set)):
-    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-                c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
-plt.title('KNN (Test set)')
-plt.xlabel('Age')
-plt.ylabel('Size')
-plt.legend()
-plt.savefig(STATICFILES_DIRS[0]+'//knntestscatter.png')
+#
+# # Visualising the Test set results
+# X_set, y_set = X_test, y_test
+# X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.02),
+#                      np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.02))
+# Xpred = np.array([X1.ravel(), X2.ravel()] + [np.repeat(0, X1.ravel().size) for _ in range(1)]).T
+# # Xpred now has a grid for x1 and x2 and average value (0) for x3 through x13
+# pred = knn.predict(Xpred).reshape(X1.shape)   # is a matrix of 0's and 1's !
+# plt.contourf(X1, X2, pred, cmap = ListedColormap(('red', 'green')))
+# plt.xlim(X1.min(), X1.max())
+# plt.ylim(X2.min(), X2.max())
+# for i, j in enumerate(np.unique(y_set)):
+#     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
+#                 c = ListedColormap(('red','orange','yellow', 'green','blue','navy','purple'))(i), label = j)
+# plt.title('KNN (Test set)')
+# plt.xlabel('Weight')
+# plt.ylabel('Age')
+# plt.legend()
+# plt.savefig(STATICFILES_DIRS[0]+'//knntestscatter.png')
 
 # X=ndf[['weight', 'age', 'height']]
 # data = pd.DataFrame({'weight':[59],'age':[36],'height':[167.6]})
